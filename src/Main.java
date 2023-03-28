@@ -1,28 +1,27 @@
-import java.io.IOException;
+import java.io.*;
 import java.lang.String;
 import java.util.Arrays;
 import java.util.List;
-import java.nio.file.*;
-import java.nio.file.Paths;
+import java.io.FileInputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedInputStream;
+
 
 public class Main {
-    private static String readFile(String fileName) throws IOException {
-        return new String(Files.readAllBytes(Paths.get(fileName)));
-
-    }
-
-    private static void writeToFile(String fileName, String content) throws IOException {
-        Files.write(Paths.get(fileName), content.getBytes(), StandardOpenOption.CREATE);
-    }
-
     public static void main(String[] args) throws IOException {
+        // Creates a FileInputStream
+        FileInputStream file = new FileInputStream("resources/input1");
 
-        String s = readFile("resources/input1");
-        List<Integer> list = Encoder.encode(s); // Encoding the data in input file
-        System.out.println(Arrays.toString(list.toArray()));
-        String ans = Decoder.decode(list);
-        writeToFile("resources/output", ans); // Decoding the data to a new file output
-        System.out.println(ans);
+        // Creates a BufferedInputStream
+        BufferedInputStream input = new BufferedInputStream(file);
+        List<Integer> list = Encoder.encode(input); // Encoding the data in input file
+
+        // Creates a FileOutputStream
+        FileOutputStream newFile = new FileOutputStream("resources/output");
+
+        // Creates a BufferedOutputStream
+        BufferedOutputStream output = new BufferedOutputStream(newFile);
+        Decoder.decode(list, output);
     }
 }
 
